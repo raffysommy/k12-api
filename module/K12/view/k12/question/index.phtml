@@ -1,0 +1,106 @@
+      <section class="content">
+        <?php if ($this->message == 'createSuccess') { ?>
+        <div class="row">
+            <div class="col-md-12">
+              <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4>	<i class="icon fa fa-check"></i> Operazione avvenuta con successo!</h4>
+                La domanda è ora disponibile per l'assegnazione ad un questionario.
+              </div>
+            </div><!-- /.col -->
+          </div>
+        <?php } ?>
+        <div class="row">
+            <div class="col-md-12">
+              <div class="box collapsed-box">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Aggiungi</h3>
+                  <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"> Espandi</i></button>
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"> Rimuovi</i></button>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <form role="form" method="post" action="<?php echo $this->url('question', array('action' => 'create')) ?>">
+                  <div class="row">
+                    <!-- left column -->
+                    <div class="col-md-6">
+                      <!-- general form elements -->
+                      <div class="box-body">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Argomento</label>
+                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Argomento" name="topic">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Corpo</label>
+                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Corpo" name="body">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1">Risposta esatta</label>
+                          <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Risposta esatta" name="answer">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <!-- general form elements -->
+                      <div class="box-body">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Risposta errata</label>
+                          <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Risposta errata" name="fakeAnswer1">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1">Risposta errata</label>
+                          <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Risposta errata" name="fakeAnswer2">
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleInputPassword1">Risposta errata</label>
+                          <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Risposta errata" name="fakeAnswer3">
+                        </div>
+                      </div><!-- /.box-body -->
+                      <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Aggiungi</button>
+                      </div>
+                    </div>
+                  </div>
+                  </form>
+                </div><!-- ./box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Tutte le domande</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Argomento</th>
+                        <th>Corpo</th>
+                        <th>Risposta</th>
+                        <th>Gestisci</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      while ($question = $this->questions->current()) {
+                        echo '<tr>';
+                        echo '<td>'.$question->topic.'</td>';
+                        echo '<td>'.$question->body.'</td>';
+                        if (substr($question->answer,0,4) == 'http')
+                          echo '<td><a href="'.$question->answer.'">Link</a></td>';
+                        else echo '<td>'.$question->answer.'</td>';
+                        echo '<td><a href="'.$this->url('question', array('action' => 'modify')).'"><i class="fa fa-pencil-square-o"></i></a>
+                                  <a href="'.$this->url('question', array('action' => 'delete', 'id' => $question->id)).'"><i class="fa fa-trash-o"></i></a>
+                              </td>';
+                        $this->questions->next();
+                      }
+                      ?>
+                  </table>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div>
+          </div>
+      </section>
