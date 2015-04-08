@@ -1,17 +1,39 @@
-This README.md file is displayed on your project page. You should edit this 
-file to describe your project, including instructions for building and 
-running the project, pointers to the license under which you are making the 
-project available, and anything else you think would be useful for others to
-know.
+K12 - Cloud and Web application
+=======================
 
-We have created an empty license.txt file for you. Well, actually, it says,
-"<Replace this text with the license you've chosen for your project.>" We 
-recommend you edit this and include text for license terms under which you're
-making your code available. A good resource for open source licenses is the 
-[Open Source Initiative](http://opensource.org/).
+Introduction
+------------
+This is a back-end for the student app and a web interface for user with higher privileges. 
 
-Be sure to update your project's profile with a short description and 
-eye-catching graphic.
+Installation
+------------
 
-Finally, consider defining some sprints and work items in Track & Plan to give 
-interested developers a sense of your cadence and upcoming enhancements.
+Using Composer (recommended)
+----------------------------
+Clone the repository and manually invoke `composer` using the shipped
+`composer.phar`:
+
+    cd my/project/dir
+    git clone git://github.com/raffysommy/K12-Api
+    cd K12-Api
+    php composer.phar self-update
+    php composer.phar install
+
+Web Server Setup
+----------------
+### Apache Setup
+
+To setup apache, setup a virtual host to point to the public/ directory of the
+project and you should be ready to go! It should look something like below:
+
+    <VirtualHost *:80>
+        ServerName k12api
+        DocumentRoot /path/to/k12api/public
+        SetEnv APPLICATION_ENV "development"
+        <Directory /path/to/k12api/public>
+            DirectoryIndex index.php
+            AllowOverride All
+            Order allow,deny
+            Allow from all
+        </Directory>
+    </VirtualHost>

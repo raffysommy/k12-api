@@ -1,9 +1,7 @@
+---
 applications:
-- disk_quota: 1024M
-  buildpack: php_buildpack
-  host: k12-api
-  name: k12-api
-  path: .
-  domain: mybluemix.net
-  instances: 1
-  memory: 128M
+- name: k12-api
+  memory: 256M
+  env:
+    CF_STAGING_TIMEOUT: 5
+    CF_STARTUP_TIMEOUT: 5
