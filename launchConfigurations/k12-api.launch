@@ -10,7 +10,7 @@
         },
         "Name": "k12-api",
         "Target": {
-            "Org": "antonio@antoniorusso.me",
+            "Org": "Educational_project_k_12",
             "Space": "dev",
             "Url": "https://api.ng.bluemix.net"
         },
