@@ -3,6 +3,7 @@
 namespace Application\Mapper;
 
 use Application\Entity\Question;
+use Application\Entity\Questionnaire;
 use Application\Entity\Score;
 use Sorus\StdMapper;
 use Zend\Db\Adapter\Adapter;
@@ -14,6 +15,8 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 class QuestionMapper extends StdMapper
 {
     protected $tableGateway;
+    protected $tableName = 'questions';
+    
     
     public function __construct(Adapter $adapter)
     {
@@ -43,28 +46,12 @@ class QuestionMapper extends StdMapper
         return $this->getTableGateway()->select();
     }
     
-    public function getTableGateway()
+    public function fetchByQuestionnaire(Questionnaire $questionnaire)
     {
-        if ($this->tableGateway instanceof TableGateway)
-            return $this->tableGateway;
-        else {
-             $this->tableGateway = new TableGateway(
-                'questions',
-                $this->getAdapter(),
-                null,
-                new HydratingResultSet(
-                    new ClassMethods,
-                    new Question()
-                )
-            );
-            return $this->tableGateway;
-        }
-    }
-    
-    public function setTableGateway(TableGateway $tableGateway)
-    {
-        $this->tableGateway = $tableGateway;
-        return $this;
+        $select = $this->getTableGateway()->getSql()->select();
+        $select->join('questions_questionnaires', 'question='.$this->tableName.'.id', array())
+               ->where(array('questionnaire' => $questionnaire->id));
+        return $this->getTableGateway()->selectWith($select);
     }
     
     public function fetchRandom($limit = null, array $topics = array())
@@ -113,6 +100,35 @@ class QuestionMapper extends StdMapper
             $this->getTableGateway()->insert($question->toArray());
         else
             $this->getTableGateway()->update($question->toArray(), array('id' => $question->id));
+    }
+    
+    public function delete($id)
+    {
+        $this->getTableGateway()->delete(array('id' => $id));
+    }
+    
+    public function getTableGateway()
+    {
+        if ($this->tableGateway instanceof TableGateway)
+            return $this->tableGateway;
+        else {
+             $this->tableGateway = new TableGateway(
+                $this->tableName,
+                $this->getAdapter(),
+                null,
+                new HydratingResultSet(
+                    new ClassMethods,
+                    new Question()
+                )
+            );
+            return $this->tableGateway;
+        }
+    }
+    
+    public function setTableGateway(TableGateway $tableGateway)
+    {
+        $this->tableGateway = $tableGateway;
+        return $this;
     }
 }
 

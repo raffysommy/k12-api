@@ -36,18 +36,6 @@ class Module
                 }
             }
         });
-
-        
-        
-        $eventManager->attach(MvcEvent::EVENT_ROUTE, function(MvcEvent $e) {
-            $routeMatch = $e->getRouteMatch();
-            // do your check for a namespace/controller
-            if($routeMatch->getMatchedRouteName() == 'zfcuser/login') {
-                $e->getViewModel()->setTemplate('layout/login');
-            }
-        });
-        
-        
     }
 
     public function getConfig()
@@ -61,6 +49,7 @@ class Module
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                    'Sorus' => __DIR__ . '/../../vendor/Sorus/lib'
                 ),
             ),
         );

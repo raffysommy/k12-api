@@ -2,13 +2,10 @@
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
-        'ZfcBase',
-        'ZfcUser',
         'ZF\ApiProblem',
         'ZF\ContentNegotiation',
         'ZF\OAuth2',
-        'Application',
-        'K12'
+        'Application'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

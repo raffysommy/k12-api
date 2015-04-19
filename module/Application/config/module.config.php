@@ -10,10 +10,6 @@
 return array(
     'router' => array(
         'routes' => array(
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
             'api' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -43,6 +39,20 @@ return array(
         ),
     ),
     'service_manager' => array(
+    	'factories' => array(
+    		'ZendDbAdapter' => function ($sm) {
+    			$config = $sm->get('Config');
+    			$dbParams = $config['db'];
+    			return new Zend\Db\Adapter\Adapter(array(
+    				'driver' => 'pdo',
+    				'dsn' => 'mysql:dbname='.$dbParams['database'].';host='.$dbParams['hostname'],
+    				'database' => $dbParams['database'],
+    				'username' => $dbParams['username'],
+    				'password' => $dbParams['password'],
+    				'hostname' => $dbParams['hostname']
+    			));
+    		},
+    	),
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
@@ -66,7 +76,8 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Question' => 'Application\Controller\QuestionController',
             'Application\Controller\User' => 'Application\Controller\UserController',
-            'Application\Controller\Topic' => 'Application\Controller\TopicController'
+            'Application\Controller\Topic' => 'Application\Controller\TopicController',
+            'Application\Controller\Questionnaire' => 'Application\Controller\QuestionnaireController',
         ),
     ),
     'view_manager' => array(
@@ -84,6 +95,9 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
+    	'strategies' => array(
+    		'ViewJsonStrategy',
+    	),
     ),
     // Placeholder for console routes
     'console' => array(

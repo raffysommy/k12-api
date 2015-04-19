@@ -13,6 +13,7 @@ class User extends StdEntity
     protected $role;
     protected $firstName;
     protected $lastName;
+    protected $school;
     
     public function getId()
     {
@@ -88,6 +89,17 @@ class User extends StdEntity
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+        return $this;
+    }
+    
+    public function getSchool()
+    {
+        return $this->school;
+    }
+    
+    public function setSchool($school)
+    {
+        $this->school = $school;
         return $this;
     }
 }

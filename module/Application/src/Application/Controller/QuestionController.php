@@ -58,4 +58,22 @@ class QuestionController extends AbstractActionController
         $questionMapper->insertScores($scores);
         return new JsonModel(array('success' => true, 'message' => 'Scores added'));
     }
+    
+    public function createAction()
+    {
+        $question = new Question(json_decode($this->params()->fromPost('question'), true));
+        $questionMapper = new QuestionMapper($this->getServiceLocator()->get('ZendDbAdapter'));
+        $questionMapper->save($question);
+        return new JsonModel(array('message' => 'Question successfully added',
+                                   'success' => true));
+    }
+    
+    public function deleteAction()
+    {
+        $id = (int) $this->params()->fromPost('id');
+        $questionMapper = new QuestionMapper($this->getServiceLocator()->get('ZendDbAdapter'));
+        $questionMapper->delete($id);
+        return new JsonModel(array('message' => 'Question successfully deleted',
+                                   'result' => true));
+    }
 }

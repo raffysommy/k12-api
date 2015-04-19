@@ -22,10 +22,21 @@ class UserMapper extends StdMapper
     {
         $select = $this->getTableGateway()->getSql()->select();
         $select->join('oauth_access_tokens','oauth_users.user_id=oauth_access_tokens.user_id')
-               ->columns(array('user_id','username','first_name','last_name','email','role'))
+               ->columns(array('user_id','username','first_name','last_name','email','role','school'))
                ->where('access_token = \''.$token.'\'');
         $result = $this->getTableGateway()->selectWith($select);
         return $result;
+    }
+    
+    public function deleteOAuthAccess($token)
+    {
+        $this->getAdapter()->getDriver()->getConnection()->beginTransaction();
+        $user = $this->getInfoByToken($token)->current();
+        $accessTokenTable = new TableGateway('oauth_access_tokens', $this->getAdapter());
+        $accessTokenTable->delete(array('user_id' => $user->id));
+        $refreshTokenTable = new TableGateway('oauth_refresh_tokens', $this->getAdapter());
+        $refreshTokenTable->delete(array('user_id' => $user->id));
+        $this->getAdapter()->getDriver()->getConnection()->commit();
     }
     
     public function getTableGateway()

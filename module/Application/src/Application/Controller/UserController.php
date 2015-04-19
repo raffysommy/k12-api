@@ -9,11 +9,6 @@ use Zend\View\Model\ViewModel;
 
 class UserController extends AbstractActionController
 {
-    public function indexAction()
-    {
-        return new ViewModel();
-    }
-    
     public function infoAction()
     {
         if ($token = $this->params()->fromPost('access_token')) {
@@ -23,5 +18,13 @@ class UserController extends AbstractActionController
             unset($result['password']);
             return new JsonModel($result);
         }
+    }
+    
+    public function outAction()
+    {
+        $token = $this->params()->fromPost('access_token');
+        $mapper = new UserMapper($this->getServiceLocator()->get('ZendDbAdapter'));
+        $user = $mapper->deleteOAuthAccess($token);
+        return new JsonModel(array('Message' => 'User successfully signed out'));
     }
 }
