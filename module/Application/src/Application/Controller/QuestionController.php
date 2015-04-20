@@ -32,6 +32,10 @@ class QuestionController extends AbstractActionController
             $mapper = new QuestionMapper($this->getServiceLocator()->get('ZendDbAdapter'));
             $result = $mapper->fetchByTopics($topics);
         }
+        else {
+        	$mapper = new QuestionMapper($this->getServiceLocator()->get('ZendDbAdapter'));
+        	$result = $mapper->fetchAll();
+        }
         return new JsonModel($result);
     }
     
