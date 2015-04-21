@@ -62,6 +62,8 @@ class Questionnaire extends StdEntity
 		if (!empty($this->questions))
 			for ($i=0; $i<count($array['questions']); $i++)
 				$array['questions'][$i] = $array['questions'][$i]->toArray();
+		else
+			unset($array['questions']);
 		return $array;
 	}
 }
