@@ -34,7 +34,7 @@ class UserController extends AbstractActionController
     
     public function registerAction()
     {
-    	if ($jsonUser = $this->params()->fromPost('user')) {
+    	if ($jsonUser = $this->params()->fromPost('User')) {
     		$userArray = json_decode($jsonUser, true);
     		$pwCrypt = new Bcrypt();
     		$pwCrypt->setCost($this->getBcryptCost());
