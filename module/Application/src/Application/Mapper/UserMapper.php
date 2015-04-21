@@ -18,6 +18,15 @@ class UserMapper extends StdMapper
         parent::__construct($adapter);
     }
     
+    public function save(User $user)
+    {
+    	$hydrator = new UserHydrator();
+    	if (!$user->id)
+    		$this->getTableGateway()->insert($hydrator->extract($user));
+    	else
+    		$this->getTableGateway()->update($hydrator->extract($user), array('user_id' => $user->id));
+    }
+    
     public function getInfoByToken($token)
     {
         $select = $this->getTableGateway()->getSql()->select();
