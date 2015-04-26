@@ -7,6 +7,7 @@ use Application\Mapper\QuestionnaireMapper;
 use Zend\Db\Adapter\Adapter;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
+use Application\Entity\Question;
 
 class QuestionnaireController extends AbstractActionController
 {
@@ -57,6 +58,28 @@ class QuestionnaireController extends AbstractActionController
         if (!$questionnaire)
             return new JsonModel(array('success' => false, 'message' => 'Questionnaire not found'));
         return new JsonModel($questionnaire->toArray());
+    }
+    
+    public function assignQuestionsAction()
+    {
+    	$jsonQuestionnaire = $this->params()->fromPost('questionnaire');
+    	if (!$jsonQuestionnaire)
+    		return new JsonModel(array('success' => false, 'message' => 'No Questionnaire provided'));
+    	
+    	$jsonQuestions = $this->params()->fromPost('questions');
+    	if (!$jsonQuestions)
+    		return new JsonModel(array('success' => false, 'message' => 'No Question provided'));
+    	
+    	$questionnaire = new Questionnaire(array('id' => json_decode($jsonQuestionnaire, true)));
+    	
+    	$questions = array();
+    	foreach (json_decode($jsonQuestions, true) as $one)
+    		array_push($questions, new Question(array('id' => $one)));
+    	
+    	$mapper = new QuestionnaireMapper($this->getServiceLocator()->get('ZendDbAdapter'));
+    	$mapper->addQuestions($questionnaire, $questions);
+    	
+    	return new JsonModel(array('success' => true, 'message' => 'Questions successfully assigned'));
     }
 }
 
