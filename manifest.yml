@@ -1,7 +1,12 @@
 ---
 applications:
 - name: k12-api
-  memory: 256M
+  disk_quota: 1024M
+  buildpack: https://github.com/cloudfoundry/php-buildpack-legacy
+  name: k12-web
+  path: .
+  instances: 1
+  memory: 128M
   env:
     CF_STAGING_TIMEOUT: 5
     CF_STARTUP_TIMEOUT: 5

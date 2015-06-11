@@ -22,8 +22,10 @@ class Module
             $routeMatch = $e->getRouteMatch();
             $server = $sm->get('ZF\OAuth2\Service\OAuth2Server');
             $controllerName = $routeMatch->getParams()['controller'];
+            $actionName=$routeMatch->getParams()['action'];
+            $controllerExclude=($actionName=='register' && $controllerName == 'Application\\Controller\\User');
             $moduleName = substr($controllerName,0,strpos($controllerName,'\\'));
-            if ($moduleName == 'Application') {
+            if ($moduleName == 'Application' && !$controllerExclude) {
                 if (!$server->verifyResourceRequest(OAuth2Request::createFromGlobals())) {
                     $response   = $server->getResponse();
                     $parameters = $response->getParameters();

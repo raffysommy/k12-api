@@ -1,4 +1,8 @@
+<<<<<<< Upstream, based on 210ee5d09959714b8e3aa0edc1e32c6fc7bb67fe
 /composer.phar
 /.settings/
 /.buildpath
 /.project
+=======
+launchConfigurations/
+>>>>>>> 6b651f1 Fix 403 on register
