@@ -48,6 +48,8 @@ class UserController extends AbstractActionController
     		));
     		$mapper = new UserMapper($this->getServiceLocator()->get('ZendDbAdapter'));
     		$mapper->save($user);
+    		include_once 'public/SendMail.php';
+            regmail($userArray);
     		return new JsonModel(array('success' => true, 'messagge' => 'User successfully registered'));
     	}
     	else
